@@ -32,18 +32,18 @@ fi
 
 # Check if dictory contains actually GoPro pictures
 
-if ls $picture_dir/G00*.JPG 1>/dev/null 2>&1
+if ls $picture_dir/G0*.JPG 1>/dev/null 2>&1
 then
 
 	# Create the morph images
 	# Create them manually by pair of images to avoid
 	# to run in a memory explosion
 
-	prevFile="$(ls $picture_dir/G00*.JPG | head -n 1)"
+	prevFile="$(ls $picture_dir/G0*.JPG | head -n 1)"
 	first=true
 	fileId=0
 
-	for file in $picture_dir/G00*.JPG
+	for file in $picture_dir/G0*.JPG
 	do
 		# First loop is just used to update prevFile
 		if [ "$first" == false ]
@@ -78,7 +78,8 @@ then
 	done
 
 	# Stitch morphed image together into a video
-	ffmpeg -loglevel 16 -r 50 -i $picture_dir/TMP%05d.jpg -s 640x480 -vcodec libx264 $picture_dir/$output.mp4
+	echo "Start to build the video: "$picture_dir"/"$output".mp4"
+	ffmpeg -loglevel 16 -r 50 -i $picture_dir/TMP%05d.jpg -s 950x540 -c:v libx264 -profile:v baseline -level 3.0 -pix_fmt yuv420p  $picture_dir/$output.mp4
 
 	# Clean up
 	rm $picture_dir/TMP*.jpg
